@@ -30,3 +30,4 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ mensaje: 'Error al obtener artículo.', error: error.message });
   }
 });
+module.exports = router;
