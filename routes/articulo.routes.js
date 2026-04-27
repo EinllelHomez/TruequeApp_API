@@ -5,7 +5,7 @@ const verificarToken = require('../middleware/auth.middleware');
 
 router.get('/', async (req, res) => {
   try {
-    const { categoria, estado } = req.query;
+    const { categoria, estado, limite=10 } = req.query;
     const filtro = { disponible: true };
     if (categoria) filtro.categoria = categoria;
     if (estado) filtro.estado = estado;
