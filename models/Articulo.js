@@ -8,7 +8,7 @@ const articuloSchema = new mongoose.Schema({
   disponible:  { type: Boolean, default: true },
   usuario:     { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true },
   categoria:   { type: mongoose.Schema.Types.ObjectId, ref: 'Categoria', required: true },
-  intercambioDeseado: { type: String, trim: true } // Qué quiere a cambio
+  intercambioDeseado: { type: String, trim: true } 
 }, { timestamps: true });
 
 module.exports = mongoose.model('Articulo', articuloSchema);
