@@ -13,5 +13,6 @@ const intercambioSchema = new mongoose.Schema({
   mensaje: { type: String, trim: true },
   fechaRespuesta: { type: Date }
 }, { timestamps: true });
+intercambioSchema.index({ estado: 1 });
 
 module.exports = mongoose.model('Intercambio', intercambioSchema);
