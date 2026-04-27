@@ -39,6 +39,9 @@ router.get('/:id', verificarToken, async (req, res) => {
 router.post('/', verificarToken, async (req, res) => {
   try {
     const { articuloOfrecido, articuloDeseado, mensaje } = req.body;
+    if (articuloOfrecido === articuloDeseado) {
+      return res.status(400).json({ mensaje: 'No puedes intercambiar el mismo artículo.' });
+    }
 
  
     const artDeseado = await Articulo.findById(articuloDeseado);
