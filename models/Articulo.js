@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
+const ESTADOS = ['nuevo', 'bueno', 'regular', 'malo'];
 
 const articuloSchema = new mongoose.Schema({
   titulo:      { type: String, required: true, trim: true },
-  descripcion: { type: String, required: true },
-  estado:      { type: String, enum: ['nuevo', 'bueno', 'regular', 'malo'], default: 'bueno' },
+  descripcion: { type: String, required: true }, 
+  estado:      { type: String, enum:ESTADOS, default: 'bueno' },
   imagenes:    [{ type: String }],
   disponible:  { type: Boolean, default: true },
   usuario:     { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario', required: true },
