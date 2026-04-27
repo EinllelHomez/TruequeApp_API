@@ -7,8 +7,8 @@ const Usuario = require('../models/Usuario');
 router.post('/registro', async (req, res) => {
   try {
     const { nombre, email, password, telefono, direccion } = req.body;
-
-    const existeUsuario = await Usuario.findOne({ email });
+    const emailNormalizado = email.toLowerCase();
+    const existeUsuario = await Usuario.findOne({ email:emailNormalizado });
     if (existeUsuario) {
       return res.status(400).json({ mensaje: 'El email ya está registrado.' });
     }
