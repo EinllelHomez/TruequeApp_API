@@ -19,6 +19,25 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.post('/', verificarToken, async (req, res) => {
+  try {
+    const { titulo, descripcion, estado, imagenes, categoria, intercambioDeseado } = req.body;
+    const articulo = new Articulo({
+      titulo,
+      descripcion,
+      estado,
+      imagenes,
+      categoria,
+      intercambioDeseado,
+      usuario: req.usuario.id
+    });
+    await articulo.save();
+    res.status(201).json({ mensaje: 'Artículo creado exitosamente.', articulo });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al crear artículo.', error: error.message });
+  }
+});
+
 router.get('/:id', async (req, res) => {
   try {
     const articulo = await Articulo.findById(req.params.id)
