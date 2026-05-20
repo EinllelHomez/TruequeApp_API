@@ -38,6 +38,8 @@ router.post('/', verificarToken, async (req, res) => {
   }
 });
 
+//Post aqui
+
 router.get('/:id', async (req, res) => {
   try {
     const articulo = await Articulo.findById(req.params.id)
