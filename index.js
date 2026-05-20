@@ -41,4 +41,4 @@ const configurarSocket = require('./socket/chat.socket');
 configurarSocket(io);
 
 const PORT = process.env.PORT || 4040;
-app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
+server.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));
