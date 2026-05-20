@@ -51,4 +51,33 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ mensaje: 'Error al obtener artículo.', error: error.message });
   }
 });
+// ACTUALIZAR artículo
+router.put('/:id', verificarToken, async (req, res) => {
+  try {
+    const articulo = await Articulo.findById(req.params.id);
+    if (!articulo) return res.status(404).json({ mensaje: 'Artículo no encontrado.' });
+    if (articulo.usuario.toString() !== req.usuario.id)
+      return res.status(403).json({ mensaje: 'No autorizado.' });
+
+    const actualizado = await Articulo.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(actualizado);
+  } catch (error) {
+    res.status(400).json({ mensaje: 'Error al actualizar.', error: error.message });
+  }
+});
+
+// ELIMINAR artículo
+router.delete('/:id', verificarToken, async (req, res) => {
+  try {
+    const articulo = await Articulo.findById(req.params.id);
+    if (!articulo) return res.status(404).json({ mensaje: 'Artículo no encontrado.' });
+    if (articulo.usuario.toString() !== req.usuario.id)
+      return res.status(403).json({ mensaje: 'No autorizado.' });
+
+    await Articulo.findByIdAndDelete(req.params.id);
+    res.json({ mensaje: 'Artículo eliminado.' });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al eliminar.', error: error.message });
+  }
+});
 module.exports = router;
