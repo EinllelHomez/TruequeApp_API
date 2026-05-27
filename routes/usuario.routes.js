@@ -1,9 +1,9 @@
-const express = require('express');
-const router = express.Router();
-const Usuario = require('../models/Usuario');
+const express        = require('express');
+const router         = express.Router();
+const Usuario        = require('../models/Usuario');
 const verificarToken = require('../middleware/auth.middleware');
 
-
+// GET /api/usuarios
 router.get('/', verificarToken, async (req, res) => {
   try {
     const usuarios = await Usuario.find({ activo: true }).select('-password');
@@ -13,7 +13,7 @@ router.get('/', verificarToken, async (req, res) => {
   }
 });
 
-
+// GET /api/usuarios/:id
 router.get('/:id', verificarToken, async (req, res) => {
   try {
     const usuario = await Usuario.findById(req.params.id).select('-password');
@@ -26,18 +26,22 @@ router.get('/:id', verificarToken, async (req, res) => {
   }
 });
 
-
+// PUT /api/usuarios/:id
 router.put('/:id', verificarToken, async (req, res) => {
   try {
-
     if (req.usuario.id !== req.params.id) {
       return res.status(403).json({ mensaje: 'No tienes permiso para editar este usuario.' });
     }
 
-    const { nombre, telefono, direccion, foto } = req.body;
+    const { nombre, telefono, direccion, foto, imagenes } = req.body;
+    const fotoFinal = foto || imagenes || undefined;
+
+    const updateData = { nombre, telefono, direccion };
+    if (fotoFinal !== undefined && fotoFinal !== '') updateData.foto = fotoFinal;
+
     const usuario = await Usuario.findByIdAndUpdate(
       req.params.id,
-      { nombre, telefono, direccion, foto },
+      updateData,
       { new: true, runValidators: true }
     ).select('-password');
 
@@ -48,13 +52,12 @@ router.put('/:id', verificarToken, async (req, res) => {
   }
 });
 
-
+// DELETE /api/usuarios/:id
 router.delete('/:id', verificarToken, async (req, res) => {
   try {
     if (req.usuario.id !== req.params.id) {
       return res.status(403).json({ mensaje: 'No tienes permiso para eliminar este usuario.' });
     }
-
     await Usuario.findByIdAndUpdate(req.params.id, { activo: false });
     res.json({ mensaje: 'Usuario eliminado correctamente.' });
   } catch (error) {
